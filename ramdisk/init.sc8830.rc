@@ -12,9 +12,9 @@ on early-init
     write /proc/sys/kernel/core_pattern /dev/null
 # radio pipe
     mkdir /dev/rpipe 0550 radio radio
-    pipe 666 /dev/rpipe/ril.vt.0
-    pipe 666 /dev/rpipe/ril.vt.1
-    pipe 666 /dev/rpipe/ril.vt.2
+    # "pipe 666 /dev/rpipe/ril.vt.N" is not an Android 7.1 init command (it was
+    # a Samsung/SPRD extension); the FIFOs are now created in init.board.rc
+    # (on early-boot) with mknod.
 
 on init
     mkdir /productinfo 0771 system system
@@ -308,11 +308,14 @@ service fuse_UsbDriveF /system/bin/sdcard -u 1023 -g 1023 -d  /mnt/media_rw/UsbD
     class late_start
     disabled
 
-#modem_control
+#modem_control: the SM-T116 stock firmware ships no modem_control (nor
+#cp_diskserver) binary; modemd/nvitemd/phoneserver drive the modem. Kept
+#disabled so init does not retry a missing binary.
 service modem_control  /system/bin/modem_control
     class core
     user root
     group system radio shell
+    disabled
     oneshot
 
 service modemd /system/bin/modemd

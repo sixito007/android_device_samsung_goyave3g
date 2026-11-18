@@ -135,6 +135,16 @@ PRODUCT_PACKAGES += \
 	libril_shim \
 	libgps_shim
 
+# RIL
+# librilutils is built from source (the KitKat librilutils.so only exports
+# record_stream_* and ril_nano_time, which the Nougat one also provides).
+# libshim_ril is preloaded into rild through TARGET_LD_SHIM_LIBS.
+# modem_control and libsecnativefeature.so are vendor blobs, see
+# proprietary-files.txt.
+PRODUCT_PACKAGES += \
+	librilutils \
+	libshim_ril
+
 # GPS
 GPS_CONFIGS := \
 	$(LOCAL_PATH)/configs/gps/gps.xml \
