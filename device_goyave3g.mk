@@ -117,10 +117,10 @@ PRODUCT_PACKAGES += \
 	libtinyalsa
 
 AUDIO_CONFIGS := \
-	$(LOCAL_PATH)/configs/audio/audio_policy.conf \
-	
+	$(LOCAL_PATH)/configs/audio/audio_policy.conf
+
 PRODUCT_COPY_FILES += \
-	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f))) \	
+	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f)))
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -147,7 +147,7 @@ PRODUCT_PACKAGES += \
 
 # GPS
 GPS_CONFIGS := \
-	$(LOCAL_PATH)/configs/gps/gps.xml \
+	$(LOCAL_PATH)/configs/gps/gps.xml
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(GPS_CONFIGS),$(f):system/etc/$(notdir $(f)))
