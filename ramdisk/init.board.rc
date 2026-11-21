@@ -4,7 +4,18 @@ import /init.storage.rc
 # add for board-relative touch screen driver for
 # alarm mode and normal mode.
 
+# RIL: VT pipes used by libreference-ril_sp.so.
+# The KitKat init had a vendor "pipe" command; Android 7.1 init does not, so
+# the FIFOs are created with mknod once /system is mounted (see init.sc8830.rc).
+on early-boot
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.0 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.1 p
+    exec -- /system/bin/mknod -m 666 /dev/rpipe/ril.vt.2 p
+
 on boot
+    # RIL: SIM hot-plug detection node (present in stock init.board.rc)
+    chown system system /sys/class/switch/sprd_simdet/state
+
     chmod 660 /dev/ttyS0
     chmod 660 /proc/bluetooth/sleep/proto
     chmod 660 /sys/class/rfkill/rfkill0/state

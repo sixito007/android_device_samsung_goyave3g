@@ -50,7 +50,7 @@ PRODUCT_COPY_FILES += \
 # Media config
 MEDIA_CONFIGS := \
 	$(LOCAL_PATH)/media/media_codecs.xml \
-	$(LOCAL_PATH)/media/media_profiles.xml
+	$(LOCAL_PATH)/media/media_profiles.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml
@@ -117,10 +117,10 @@ PRODUCT_PACKAGES += \
 	libtinyalsa
 
 AUDIO_CONFIGS := \
-	$(LOCAL_PATH)/configs/audio/audio_policy.conf \
-	
+	$(LOCAL_PATH)/configs/audio/audio_policy.conf
+
 PRODUCT_COPY_FILES += \
-	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f))) \	
+	$(foreach f,$(AUDIO_CONFIGS),$(f):system/etc/$(notdir $(f)))
 
 # Wifi
 PRODUCT_PACKAGES += \
@@ -135,9 +135,19 @@ PRODUCT_PACKAGES += \
 	libril_shim \
 	libgps_shim
 
+# RIL
+# librilutils is built from source (the KitKat librilutils.so only exports
+# record_stream_* and ril_nano_time, which the Nougat one also provides).
+# libshim_ril is preloaded into rild through TARGET_LD_SHIM_LIBS.
+# modem_control and libsecnativefeature.so are vendor blobs, see
+# proprietary-files.txt.
+PRODUCT_PACKAGES += \
+	librilutils \
+	libshim_ril
+
 # GPS
 GPS_CONFIGS := \
-	$(LOCAL_PATH)/configs/gps/gps.xml \
+	$(LOCAL_PATH)/configs/gps/gps.xml
 
 PRODUCT_COPY_FILES += \
 	$(foreach f,$(GPS_CONFIGS),$(f):system/etc/$(notdir $(f)))

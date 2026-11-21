@@ -41,8 +41,22 @@ TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 
 # RIL
+# Use the stock SPRD rild / libril / libreference-ril_sp blobs. Without these
+# three flags hardware/ril builds the AOSP versions, which replace the blobs.
+BOARD_PROVIDES_RILD := true
+BOARD_PROVIDES_LIBRIL := true
+BOARD_PROVIDES_LIBREFERENCE_RIL := true
 BOARD_RIL_CLASS := ../../../device/samsung/goyave3g/ril
 # COMMON_GLOBAL_CFLAGS += -DSEC_PRODUCT_FEATURE_RIL_CALL_DUALMODE_CDMAGSM
+
+# Shims: KitKat libril.so / libreference-ril_sp.so import
+# Parcel::writeString16(const uint16_t*, size_t) and the "*numeric2" msim
+# properties. libshim_ril (device/samsung/goyave3g/shims) is preloaded in rild.
+TARGET_LD_SHIM_LIBS += /system/bin/rild|libshim_ril.so
+
+# SELinux: RIL policy for the modem daemons (the kernel cmdline below keeps the
+# device permissive for the first test boots)
+BOARD_SEPOLICY_DIRS += device/samsung/goyave3g/sepolicy
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -78,7 +92,7 @@ USE_OPENGL_RENDERER := true
 USE_OVERLAY_COMPOSER_GPU := true
 DEVICE_FORCE_VIDEO_GO_OVERLAYCOMPOSER := true
 TARGET_FORCE_HWC_FOR_VIRTUAL_DISPLAYS := true
-COMMON_GLOBAL_CFLAGS += -DSC8830_HWC
+TARGET_GLOBAL_CFLAGS += -DSC8830_HWC
 
 # Resolution
 TARGET_SCREEN_HEIGHT := 1024
@@ -95,7 +109,7 @@ BOARD_SPRD_RIL := true
 BOARD_SAMSUNG_RIL := true
 BOARD_USE_SAMSUNG_COLORFORMAT := true
 BOARD_NEEDS_MEMORYHEAPION_SPRD := true
-COMMON_GLOBAL_CFLAGS += -DSPRD_HARDWARE
+TARGET_GLOBAL_CFLAGS += -DSPRD_HARDWARE
 
 # healthd
 BOARD_HAL_STATIC_LIBRARIES := libhealthd.sc8830
