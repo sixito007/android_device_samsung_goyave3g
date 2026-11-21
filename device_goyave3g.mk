@@ -50,7 +50,7 @@ PRODUCT_COPY_FILES += \
 # Media config
 MEDIA_CONFIGS := \
 	$(LOCAL_PATH)/media/media_codecs.xml \
-	$(LOCAL_PATH)/media/media_profiles.xml
+	$(LOCAL_PATH)/media/media_profiles.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_video.xml \
 	frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml
